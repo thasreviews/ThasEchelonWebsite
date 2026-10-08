@@ -108,5 +108,45 @@
     <footer>
         <p>&copy; 2024 ThasEchelon Studios. All rights reserved.</p>
     </footer>
+  <script type="module">
+    const modelContext = document.modelContext;
+    if (typeof modelContext?.registerTool === "function") {
+      const controller = new AbortController();
+      window.addEventListener("pagehide", () => controller.abort(), { once: true });
+      const sections = ["about", "services", "portfolio", "contact"];
+      const tools = [
+        {
+          name: "get_studio_overview",
+          title: "Read the studio overview",
+          description: "Returns the visible ThasEchelon studio description and service names from this page.",
+          inputSchema: { type: "object", properties: {}, additionalProperties: false },
+          annotations: { readOnlyHint: true, untrustedContentHint: false },
+          execute() {
+            return {
+              title: document.title,
+              description: document.querySelector(".hero p")?.textContent?.trim() ?? "",
+              services: [...document.querySelectorAll("#services li")].map((item) => item.textContent.trim()),
+              note: "Page copy describes the studio; it is not independent proof of past results.",
+            };
+          },
+        },
+        {
+          name: "show_studio_section",
+          title: "Show a studio section",
+          description: "Scrolls this page to one of its visible studio sections.",
+          inputSchema: { type: "object", properties: { section: { type: "string", enum: sections } }, required: ["section"], additionalProperties: false },
+          annotations: { readOnlyHint: false, untrustedContentHint: false },
+          execute({ section }) {
+            if (!sections.includes(section)) throw new TypeError("Choose about, services, portfolio, or contact.");
+            const target = document.getElementById(section);
+            if (!target) throw new Error("That section is not available on this page.");
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            return { section, shown: true };
+          },
+        },
+      ];
+      for (const tool of tools) modelContext.registerTool(tool, { signal: controller.signal }).catch((error) => console.warn("WebMCP registration failed:", tool.name, error));
+    }
+  </script>
 </body>
 </html>
