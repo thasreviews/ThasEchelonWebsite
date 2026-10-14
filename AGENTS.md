@@ -25,3 +25,6 @@ Report objective, baseline, latest evidence, blocked integration, test result, d
 
 ## Project integration — Thas Echelon Website
 Repository contents and deployment pipeline have not been independently verified in this session. Inventory actual source files, dependencies, current host and privacy/rights obligations before implementing or publishing. Do not imply that creating this guidance deploys or changes a live website.
+
+## Shared analog research (2026-10-14)
+Review the evidence-backed wins/failures and experiment gates at https://github.com/thasreviews/stefnaum-social-os/blob/main/ops/ANALOG-RESEARCH.md before expanding scope or automating acquisition. Prioritize real customer demand, productized delivery, verified payments, independent QA, and human escalation. Adapt only lessons relevant to this repository; the linked file is guidance, not a live shared agent runtime.
